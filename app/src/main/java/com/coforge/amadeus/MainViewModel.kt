@@ -11,4 +11,19 @@ import java.io.InputStream
 
 class MainViewModel : ViewModel() {
 
+
+    /*
+    *Read from input stream line by line
+    */
+    fun readDataFromWeatherStream(inputStream: InputStream) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val gson = Gson()
+            val weatherList = mutableListOf<WeatherDataItem>()
+            var weatherDataItem: WeatherDataItem
+            inputStream.bufferedReader().forEachLine {
+                    Log.e("List ${weatherList.size}", it.toString())
+                }
+            }
+        }
+
 }
