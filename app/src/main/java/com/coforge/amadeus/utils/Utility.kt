@@ -13,6 +13,5 @@ object Utility {
         } else {
             return ""
         }
-
     }
 }

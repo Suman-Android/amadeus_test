@@ -16,6 +16,8 @@ import com.coforge.amadeus.models.WeatherUiState
 import com.coforge.amadeus.utils.collect
 import com.coforge.amadeus.utils.collectLast
 import com.coforge.amadeus.utils.executeWithAction
+import com.coforge.amadeus.utils.hideKeyboard
+import com.google.android.material.internal.ViewUtils.hideKeyboard
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.flow.map
@@ -26,6 +28,7 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     lateinit var mainViewModel: MainViewModel
+
     @Inject
     lateinit var weatherPagingAdapter: WeatherPagingAdapter
 
@@ -72,8 +75,6 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-
-
     //option menu has search bar
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_weather, menu)
@@ -88,12 +89,17 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                if (newText != null)
+                if (newText != null) {
                     mainViewModel.onSubmitQuery(newText)
+                    if (newText.isEmpty())
+                        searchView.hideKeyboard()
+                }
                 return true
             }
         })
 
         return true
     }
+
+
 }
