@@ -7,6 +7,9 @@
 
         <import type="android.view.View" />
 
+        <variable
+            name="weatherItemUiState"
+            type="com.coforge.amadeus.models.WeatherItemUiState" />
     </data>
 
     <androidx.cardview.widget.CardView

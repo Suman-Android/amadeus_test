@@ -1,29 +1,40 @@
 package com.coforge.amadeus
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.*
 import com.coforge.amadeus.models.WeatherDataItem
+import com.coforge.amadeus.models.WeatherItemUiState
+import com.coforge.amadeus.repository.WeatherForecastRepository
 import com.google.gson.Gson
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import java.io.InputStream
+import javax.inject.Inject
 
-class MainViewModel : ViewModel() {
+@HiltViewModel
+class MainViewModel @Inject constructor(
+    private val weatherRepository: WeatherForecastRepository
+) : ViewModel() {
 
-
-    /*
-    *Read from input stream line by line
-    */
-    fun readDataFromWeatherStream(inputStream: InputStream) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val gson = Gson()
-            val weatherList = mutableListOf<WeatherDataItem>()
-            var weatherDataItem: WeatherDataItem
-            inputStream.bufferedReader().forEachLine {
-                    Log.e("List ${weatherList.size}", it.toString())
-                }
-            }
+    fun saveWeatherData(weatherDataItem: WeatherDataItem) {
+        viewModelScope.launch {
+            weatherRepository.saveWeatherDataItem(weatherDataItem)
         }
+    }
+
+    fun readDataFromFile(inputStream: InputStream) {
+        viewModelScope.launch(Dispatchers.IO) {
+                val gson = Gson()
+                var weatherDataItem: WeatherDataItem
+                inputStream.bufferedReader().forEachLine {
+                    weatherDataItem = gson.fromJson(it, WeatherDataItem::class.java)
+                    saveWeatherData(weatherDataItem)
+                }
+        }
+    }
+
 
 }

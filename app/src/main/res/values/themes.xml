@@ -13,4 +13,8 @@
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <declare-styleable name="MyCustomView">
+        <attr name="currencyCode" format="string" />
+    </declare-styleable>
 </resources>
