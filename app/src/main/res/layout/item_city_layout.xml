@@ -34,7 +34,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="85dp"
-                android:text="City, Country"
+                android:text="@{weatherItemUiState.cityCountryName}"
                 android:textAlignment="center"
                 android:textSize="@dimen/title_medium"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -46,7 +46,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="Temp"
+                android:text="@{weatherItemUiState.temperature}"
                 android:textAlignment="center"
                 android:textSize="@dimen/title_large"
                 android:textStyle="bold"
@@ -60,7 +60,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="time"
+                android:text="@{weatherItemUiState.updatedAt}"
                 android:textAlignment="center"
                 android:textSize="@dimen/body_small"
                 android:textStyle="bold"
@@ -71,10 +71,11 @@
 
             <TextView
                 android:id="@+id/textViewMinTemp"
-                android:layout_width="96dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/horizontal_margin"
                 android:layout_marginTop="10dp"
-                android:text="Min Temp"
+                android:text="@{weatherItemUiState.minTemp}"
                 android:textAlignment="center"
                 android:textSize="@dimen/body_medium"
                 android:textStyle="bold"
@@ -82,71 +83,24 @@
                 app:layout_constraintTop_toBottomOf="@id/textViewUpdatedAt" />
 
             <TextView
-                android:id="@+id/textViewPressure"
-                android:layout_width="97dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="Min Temp"
-                android:textAlignment="center"
-                android:textSize="@dimen/body_small"
-                android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@+id/textViewMinTemp"
-                app:layout_constraintTop_toBottomOf="@id/textViewUpdatedAt" />
-
-            <TextView
-                android:id="@+id/textViewHumidity"
-                android:layout_width="97dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="Humidity"
-                android:textAlignment="center"
-                android:textSize="@dimen/body_medium"
-                android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@+id/textViewPressure"
-                app:layout_constraintTop_toBottomOf="@id/textViewUpdatedAt" />
-
-
-            <TextView
-                android:id="@+id/textViewMaxtTemp"
-                android:layout_width="97dp"
+                android:id="@+id/textViewMaxTemp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:text="Max temp"
-                android:textAlignment="center"
+                android:text="@{weatherItemUiState.maxTemp}"
+                android:textAlignment="textEnd"
                 android:textSize="@dimen/body_medium"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/textViewHumidity"
+                app:layout_constraintStart_toEndOf="@+id/textViewMinTemp"
                 app:layout_constraintTop_toBottomOf="@+id/textViewUpdatedAt" />
 
-            <TextView
-                android:id="@+id/textViewSeaLevel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/horizontal_margin"
-                android:text=""
-                android:textSize="@dimen/body_large"
-                android:textAlignment="center"
-                android:visibility="gone"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewMinTemp" />
-
-            <TextView
-                android:id="@+id/textviewGroundLevel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/horizontal_margin"
-                android:textSize="@dimen/body_large"
-                android:textAlignment="center"
-                android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewMaxtTemp" />
 
             <androidx.constraintlayout.widget.Group
                 android:id="@+id/group"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:constraint_referenced_ids="textViewMinTemp,textViewPressure,textViewHumidity,textViewMaxtTemp" />
+                app:constraint_referenced_ids="textViewMinTemp, textViewMaxTemp" />
 
 
             <androidx.constraintlayout.widget.Barrier
@@ -154,37 +108,49 @@
                 android:layout_width="match_parent"
                 android:layout_height="20dp"
                 app:barrierDirection="bottom"
-                app:constraint_referenced_ids="textViewMinTemp,textViewPressure,textViewHumidity,textViewMaxtTemp"/>
+                app:constraint_referenced_ids="textViewMinTemp,textViewMaxTemp" />
 
             <TextView
                 android:id="@+id/tvWind"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/body_large"
                 android:layout_margin="@dimen/horizontal_margin"
-                android:text="Wind"
+                android:text="@{weatherItemUiState.wind}"
+                android:textSize="@dimen/body_large"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/barrier" />
 
             <TextView
-                android:id="@+id/tvRain"
+                android:id="@+id/tvCloud"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/body_large"
                 android:layout_margin="@dimen/horizontal_margin"
-                android:text="Rain"
+                android:text="@{weatherItemUiState.geCloud()}"
+                android:textSize="@dimen/body_large"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvWind" />
+
 
             <TextView
                 android:id="@+id/tvWeather"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/body_large"
                 android:layout_margin="@dimen/horizontal_margin"
-                android:text="Weather"
+                android:text="@{weatherItemUiState.weather}"
+                android:textSize="@dimen/body_large"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvRain" />
+                app:layout_constraintTop_toBottomOf="@+id/tvCloud" />
+
+            <TextView
+                android:id="@+id/tvRain"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/horizontal_margin"
+                android:text="@{weatherItemUiState.rain}"
+                android:textSize="@dimen/body_large"
+                android:visibility="@{weatherItemUiState.rainVisibility}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvWeather" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
