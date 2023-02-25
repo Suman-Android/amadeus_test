@@ -1,23 +1,22 @@
-package com.coforge.amadeus
+package com.coforge.amadeus.feature.weather
 
 import android.os.Bundle
 import android.view.Menu
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
 import androidx.paging.LoadState
 import androidx.paging.PagingData
+import com.coforge.amadeus.R
 import com.coforge.amadeus.adapter.WeatherPagingAdapter
 import com.coforge.amadeus.common.footer.FooterAdapter
 import com.coforge.amadeus.databinding.ActivityMainBinding
-import com.coforge.amadeus.models.WeatherItemUiState
-import com.coforge.amadeus.models.WeatherUiState
+import com.coforge.amadeus.db.entites.WeatherItemUiState
+import com.coforge.amadeus.db.entites.WeatherUiState
 import com.coforge.amadeus.utils.collect
-import com.coforge.amadeus.utils.collectLast
 import com.coforge.amadeus.utils.executeWithAction
 import com.coforge.amadeus.utils.hideKeyboard
-import com.google.android.material.internal.ViewUtils.hideKeyboard
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.flow.map
@@ -27,34 +26,38 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    lateinit var mainViewModel: MainViewModel
+    val mainViewModel: MainViewModel by viewModels()
 
     @Inject
     lateinit var weatherPagingAdapter: WeatherPagingAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         readDataFromFile()
         setAdapter()
         setListener()
-        collectLast(mainViewModel.weatherItemsUiStates, ::setUsers)
     }
 
-    /*
-        Get "weather_14 File from asset
-    */
+    //Load "weather_14 File from asset
     private fun readDataFromFile() {
         val inputStream: InputStream = assets.open("weather_14.json")
         mainViewModel.readDataFromFile(inputStream)
     }
 
+    //Set button ClickListener
     private fun setListener() {
         binding.btnRetry.setOnClickListener { weatherPagingAdapter.retry() }
     }
 
+
+    /*
+    * Stream is collected by using collect
+    * When the stream is collected then we are setting the adapter
+    * */
     private fun setAdapter() {
+        collect(mainViewModel.weatherItemsUiStates, ::setUsers)
+
         collect(flow = weatherPagingAdapter.loadStateFlow
             .distinctUntilChangedBy { it.source.refresh }
             .map { it.refresh },
@@ -64,18 +67,26 @@ class MainActivity : AppCompatActivity() {
             weatherPagingAdapter.withLoadStateFooter(FooterAdapter(weatherPagingAdapter::retry))
     }
 
+
+    //binding data
     private fun setUsersUiState(loadState: LoadState) {
         binding.executeWithAction {
             usersUiState = WeatherUiState(loadState)
         }
     }
 
+    //setting adapter
     private suspend fun setUsers(userItemsPagingData: PagingData<WeatherItemUiState>) {
         weatherPagingAdapter.submitData(userItemsPagingData)
     }
 
 
-    //option menu has search bar
+    /*
+    * OptionMenu has search capability
+    * When user enters text(city name) in searchbar
+    * then it communicates/query with viewmodel for result Data
+    * When searchbar is blank then it hides the soft keyboard
+    * */
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_weather, menu)
         val searchItem = menu?.findItem(R.id.action_search)

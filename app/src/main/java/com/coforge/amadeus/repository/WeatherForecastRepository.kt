@@ -2,7 +2,7 @@ package com.coforge.amadeus.repository
 
 import androidx.paging.PagingSource
 import com.amadeus.myapplication.db.WeatherForecastDao
-import com.coforge.amadeus.models.WeatherDataItem
+import com.coforge.amadeus.db.entites.WeatherDataItem
 import javax.inject.Inject
 
 

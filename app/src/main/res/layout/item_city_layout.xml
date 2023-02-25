@@ -9,7 +9,7 @@
 
         <variable
             name="weatherItemUiState"
-            type="com.coforge.amadeus.models.WeatherItemUiState" />
+            type="com.coforge.amadeus.db.entites.WeatherItemUiState" />
     </data>
 
     <androidx.cardview.widget.CardView

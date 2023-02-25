@@ -6,7 +6,7 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.coforge.amadeus.databinding.ItemCityLayoutBinding
-import com.coforge.amadeus.models.WeatherItemUiState
+import com.coforge.amadeus.db.entites.WeatherItemUiState
 import com.coforge.amadeus.utils.executeWithAction
 import javax.inject.Inject
 

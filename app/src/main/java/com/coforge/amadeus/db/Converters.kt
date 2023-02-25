@@ -2,8 +2,8 @@ package com.amadeus.myapplication.db
 
 import androidx.room.ProvidedTypeConverter
 import androidx.room.TypeConverter
-import com.coforge.amadeus.models.Lang
-import com.coforge.amadeus.models.Weather
+import com.coforge.amadeus.db.entites.Lang
+import com.coforge.amadeus.db.entites.Weather
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.lang.reflect.Type

@@ -1,4 +1,4 @@
-package com.coforge.amadeus.models
+package com.coforge.amadeus.db.entites
 
 import android.content.Context
 import androidx.paging.LoadState

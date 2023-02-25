@@ -4,16 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="usersUiState"
-            type= "com.coforge.amadeus.models.WeatherUiState" />
+            type="com.coforge.amadeus.db.entites.WeatherUiState" />
 
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.UserActivity">
+        tools:context=".feature.UserActivity">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvWeatherList"
@@ -62,4 +63,5 @@
             app:layout_constraintTop_toBottomOf="@+id/btnRetry"
             tools:text="Internet Connection Failed" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout></layout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
