@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/horizontal_margin"
+        android:background="@color/card_background"
+        android:padding="@dimen/horizontal_padding"
+        app:cardCornerRadius="@dimen/card_corner_radius">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/card_background"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/horizontal_padding"
+            tools:viewBindingIgnore="true">
+
+
+            <TextView
+                android:id="@+id/textViewCityCountry"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="85dp"
+                android:text="City, Country"
+                android:textAlignment="center"
+                android:textSize="@dimen/title_medium"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textTemp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Temp"
+                android:textAlignment="center"
+                android:textSize="@dimen/title_large"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewCityCountry"
+                tools:layout_editor_absoluteY="128dp" />
+
+            <TextView
+                android:id="@+id/textViewUpdatedAt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="time"
+                android:textAlignment="center"
+                android:textSize="@dimen/body_small"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textTemp"
+                tools:layout_editor_absoluteY="128dp" />
+
+            <TextView
+                android:id="@+id/textViewMinTemp"
+                android:layout_width="96dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Min Temp"
+                android:textAlignment="center"
+                android:textSize="@dimen/body_medium"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textViewUpdatedAt" />
+
+            <TextView
+                android:id="@+id/textViewPressure"
+                android:layout_width="97dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Min Temp"
+                android:textAlignment="center"
+                android:textSize="@dimen/body_small"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/textViewMinTemp"
+                app:layout_constraintTop_toBottomOf="@id/textViewUpdatedAt" />
+
+            <TextView
+                android:id="@+id/textViewHumidity"
+                android:layout_width="97dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Humidity"
+                android:textAlignment="center"
+                android:textSize="@dimen/body_medium"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/textViewPressure"
+                app:layout_constraintTop_toBottomOf="@id/textViewUpdatedAt" />
+
+
+            <TextView
+                android:id="@+id/textViewMaxtTemp"
+                android:layout_width="97dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="Max temp"
+                android:textAlignment="center"
+                android:textSize="@dimen/body_medium"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textViewHumidity"
+                app:layout_constraintTop_toBottomOf="@+id/textViewUpdatedAt" />
+
+            <TextView
+                android:id="@+id/textViewSeaLevel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/horizontal_margin"
+                android:text=""
+                android:textSize="@dimen/body_large"
+                android:textAlignment="center"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewMinTemp" />
+
+            <TextView
+                android:id="@+id/textviewGroundLevel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/horizontal_margin"
+                android:textSize="@dimen/body_large"
+                android:textAlignment="center"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewMaxtTemp" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="textViewMinTemp,textViewPressure,textViewHumidity,textViewMaxtTemp" />
+
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/barrier"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="textViewMinTemp,textViewPressure,textViewHumidity,textViewMaxtTemp"/>
+
+            <TextView
+                android:id="@+id/tvWind"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/body_large"
+                android:layout_margin="@dimen/horizontal_margin"
+                android:text="Wind"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/barrier" />
+
+            <TextView
+                android:id="@+id/tvRain"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/body_large"
+                android:layout_margin="@dimen/horizontal_margin"
+                android:text="Rain"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvWind" />
+
+            <TextView
+                android:id="@+id/tvWeather"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/body_large"
+                android:layout_margin="@dimen/horizontal_margin"
+                android:text="Weather"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvRain" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+</layout>
