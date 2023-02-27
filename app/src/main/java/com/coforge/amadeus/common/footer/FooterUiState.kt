@@ -3,7 +3,7 @@ package com.coforge.amadeus.common.footer
 import android.content.Context
 import androidx.paging.LoadState
 import com.coforge.amadeus.R
-import com.coforge.amadeus.common.BaseUiState
+import com.coforge.amadeus.common.base.BaseUiState
 
 
 data class FooterUiState(private val loadState: LoadState) : BaseUiState() {

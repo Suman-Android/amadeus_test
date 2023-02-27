@@ -37,17 +37,7 @@ class WeatherPagingAdapter @Inject constructor() :
 
     }
 
-    override fun getItemViewType(position: Int): Int {
-        return super.getItemViewType(position)
-    }
-
     companion object {
-        private const val VIEW_CLOUD = 0
-        private const val VIEW_RAIN = 1
-        private const val VIEW_MIST = 2
-        private const val VIEW_FOG = 3
-
-
         private val COMPARATOR = object : DiffUtil.ItemCallback<WeatherItemUiState>() {
             override fun areItemsTheSame(
                 oldItem: WeatherItemUiState, newItem: WeatherItemUiState

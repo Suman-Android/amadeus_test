@@ -5,10 +5,14 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.*
 import com.coforge.amadeus.db.entites.WeatherDataItem
 import com.coforge.amadeus.db.entites.WeatherItemUiState
+import com.coforge.amadeus.network.doOnFailure
+import com.coforge.amadeus.network.doOnLoading
+import com.coforge.amadeus.network.doOnSuccess
 import com.coforge.amadeus.repository.WeatherForecastRepository
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import java.io.InputStream
@@ -21,8 +25,8 @@ class MainViewModel @Inject constructor(
     var currentQuery = ""
 
     /*
-    *Getting the result based on query text
-    *If query text is empty then we reload all the default data
+    * Getting the result based on query text
+    * If query text is empty then we reload all the default data
     * else we loading data based on query(city) text
     * */
     private var pagingSource: PagingSource<Int, WeatherDataItem>? = null
@@ -37,11 +41,17 @@ class MainViewModel @Inject constructor(
         }
 
 
+    /*
+    * Sets page config
+    * Convert Paging Source data into flow
+    * Map flow into WeatherItemUiState
+    * */
     val weatherItemsUiStates = Pager(
         PagingConfig(
-            pageSize = 20,
-            enablePlaceholders = false,
-            maxSize = 200
+            pageSize = PAGE_SIZE,
+            prefetchDistance = PREFETCH_DISTANCE,
+            enablePlaceholders = ENABLE_PLACE_HOLDER,
+            maxSize = PAGE_SIZE + 2 * PREFETCH_DISTANCE
         )
     ) {
         pagingSource!!
@@ -58,7 +68,8 @@ class MainViewModel @Inject constructor(
     }
 
     /*
-    *Reading Input Stream Line By Line
+    * Launching coroutine and perform operations on IO Thread
+    * Reading Input Stream Line By Line
     * Converting each line into WeatherDataItem java object
     */
     fun readDataFromFile(inputStream: InputStream) {
@@ -77,10 +88,32 @@ class MainViewModel @Inject constructor(
     }
 
 
-    //if pageSource is not null the invalidates the pageSource
+    // If pageSource is not null the invalidates the pageSource
     fun onSubmitQuery(query: String) {
         currentQuery = query
         pagingSource?.invalidate()
+    }
+
+    // API Calling Sample
+    fun callWeatherApi() = viewModelScope.launch {
+        weatherRepository.callWeatherApi()
+            .doOnLoading {
+                TODO("Show ProgressBar")
+            }
+            .doOnSuccess { data ->
+                TODO("Hide ProgressBar & Show data in the UI")
+            }
+            .doOnFailure { error ->
+                TODO("Show error msg to user")
+            }
+            .collect()
+    }
+
+    companion object {
+        private const val PAGE_SIZE = 50
+        private const val PREFETCH_DISTANCE = 150
+        private const val ENABLE_PLACE_HOLDER = false
+
     }
 
 }

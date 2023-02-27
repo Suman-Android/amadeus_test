@@ -1,4 +1,4 @@
-package com.coforge.amadeus.common
+package com.coforge.amadeus.common.base
 
 import android.view.View
 

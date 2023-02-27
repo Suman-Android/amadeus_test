@@ -6,6 +6,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import com.coforge.amadeus.R
@@ -27,7 +28,6 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     val mainViewModel: MainViewModel by viewModels()
-
     @Inject
     lateinit var weatherPagingAdapter: WeatherPagingAdapter
 
@@ -53,16 +53,22 @@ class MainActivity : AppCompatActivity() {
 
     /*
     * Stream is collected by using collect
+    * For making flow lifecycle aware, collecting streams into Lifecycle Started scope
     * When the stream is collected then we are setting the adapter
     * */
     private fun setAdapter() {
-        collect(mainViewModel.weatherItemsUiStates, ::setUsers)
+        lifecycleScope.launchWhenStarted {
+            collect(mainViewModel.weatherItemsUiStates, ::setUsers)
+        }
 
-        collect(flow = weatherPagingAdapter.loadStateFlow
-            .distinctUntilChangedBy { it.source.refresh }
-            .map { it.refresh },
-            action = ::setUsersUiState
-        )
+        lifecycleScope.launchWhenStarted {
+            collect(flow = weatherPagingAdapter.loadStateFlow
+                .distinctUntilChangedBy { it.source.refresh }
+                .map { it.refresh },
+                action = ::setUsersUiState
+            )
+        }
+
         binding.rvWeatherList.adapter =
             weatherPagingAdapter.withLoadStateFooter(FooterAdapter(weatherPagingAdapter::retry))
     }

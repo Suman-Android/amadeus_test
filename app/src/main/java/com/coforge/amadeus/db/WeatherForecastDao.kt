@@ -13,7 +13,7 @@ interface WeatherForecastDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertWeather(weatherDataItem: WeatherDataItem)
 
-    @Query("SELECT * FROM weather_table ORDER BY country ASC")
+    @Query("SELECT * FROM weather_table ORDER BY findname ASC")
     fun getAllWeather(): PagingSource<Int, WeatherDataItem>
 
     @Query("SELECT COUNT(*) FROM weather_table")

@@ -2,11 +2,18 @@ package com.coforge.amadeus.repository
 
 import androidx.paging.PagingSource
 import com.amadeus.myapplication.db.WeatherForecastDao
+import com.coforge.amadeus.common.base.BaseApi
 import com.coforge.amadeus.db.entites.WeatherDataItem
+import com.coforge.amadeus.network.ApiService
+import com.coforge.amadeus.network.ResultWrapper
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 
-class WeatherForecastRepository @Inject constructor(private val weatherForecastDao: WeatherForecastDao) {
+class WeatherForecastRepository @Inject constructor(
+    private val weatherForecastDao: WeatherForecastDao,
+    val apiService: ApiService
+) : BaseApi() {
 
     /*
     *  Query  data from weather table
@@ -34,5 +41,11 @@ class WeatherForecastRepository @Inject constructor(private val weatherForecastD
         return weatherForecastDao.searchCity(query)
     }
 
+
+    //NetworkCall
+    suspend fun callWeatherApi(): Flow<ResultWrapper<WeatherDataItem>> =
+        safeApiCall {
+            apiService.getWeather()
+        }
 
 }

@@ -3,7 +3,7 @@ package com.coforge.amadeus.db.entites
 import android.content.Context
 import androidx.paging.LoadState
 import com.coforge.amadeus.R
-import com.coforge.amadeus.common.BaseUiState
+import com.coforge.amadeus.common.base.BaseUiState
 
 data class WeatherUiState(
     private val loadState: LoadState

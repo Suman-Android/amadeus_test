@@ -1,15 +1,20 @@
 package com.coforge.amadeus.db.entites
 
+import android.text.TextUtils
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import com.coforge.amadeus.common.BaseUiState
+import com.coforge.amadeus.common.base.BaseUiState
 import com.coforge.amadeus.utils.Utility
 
 data class WeatherItemUiState(private val weatherDataItem: WeatherDataItem) : BaseUiState() {
 
     private fun getCityName() = weatherDataItem.city?.name
 
-    fun getCityCountryName() = getCityName() + ", " + getCountryName()
+    fun getCityCountryName() = if (TextUtils.isEmpty(getCityName())) {
+        getCountryName()
+    } else {
+        "${getCityName()},  ${getCountryName()}"
+    }
 
     fun getCityID() = weatherDataItem.city?.id
 
@@ -38,7 +43,7 @@ data class WeatherItemUiState(private val weatherDataItem: WeatherDataItem) : Ba
 
     fun geCloud() = "Clouds : ${weatherDataItem.clouds?.all}"
 
-    fun getRain() = "Rain : ${weatherDataItem.rain?.threeHour}hours"
+    fun getRain() = "Rain : ${weatherDataItem.rain?.threeHour} hrs"
 
     fun getWeather() =
         "${weatherDataItem.weather?.get(0)?.main.toString()} : ${weatherDataItem.weather?.get(0)?.description.toString()}"
