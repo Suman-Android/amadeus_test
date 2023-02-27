@@ -42,7 +42,8 @@ class WeatherForecastRepository @Inject constructor(
     }
 
 
-    //NetworkCall
+    //We wrap the actual api call into safe api which is the base class for
+    // all the API
     suspend fun callWeatherApi(): Flow<ResultWrapper<WeatherDataItem>> =
         safeApiCall {
             apiService.getWeather()

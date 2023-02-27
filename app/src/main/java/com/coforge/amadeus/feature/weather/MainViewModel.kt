@@ -94,7 +94,11 @@ class MainViewModel @Inject constructor(
         pagingSource?.invalidate()
     }
 
-    // API Calling Sample
+    /*
+    * API Calling Sample
+    * It communicate with repository for actual api call
+    * As soon api called flow is collecting the result
+    * */
     fun callWeatherApi() = viewModelScope.launch {
         weatherRepository.callWeatherApi()
             .doOnLoading {
