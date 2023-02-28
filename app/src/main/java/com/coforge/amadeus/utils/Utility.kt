@@ -9,7 +9,7 @@ object Utility {
     fun convertLongToTime(time: Long?): String {
         if (time != null) {
             val date = Date(time)
-            val format = SimpleDateFormat(DATE_FORMAT_DD_MMM_YYYY_HH_MM)
+            val format = SimpleDateFormat(DATE_FORMAT_DD_MMM_YYYY_HH_MM, Locale.ENGLISH)
             return format.format(date)
         } else {
             return ""

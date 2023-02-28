@@ -6,7 +6,9 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import com.coforge.amadeus.R
@@ -21,6 +23,7 @@ import com.coforge.amadeus.utils.hideKeyboard
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import java.io.InputStream
 import javax.inject.Inject
 
@@ -28,6 +31,7 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     val mainViewModel: MainViewModel by viewModels()
+
     @Inject
     lateinit var weatherPagingAdapter: WeatherPagingAdapter
 
@@ -57,16 +61,20 @@ class MainActivity : AppCompatActivity() {
     * When the stream is collected then we are setting the adapter
     * */
     private fun setAdapter() {
-        lifecycleScope.launchWhenStarted {
-            collect(mainViewModel.weatherItemsUiStates, ::setUsers)
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                collect(mainViewModel.weatherItemsUiStates, ::setUsers)
+            }
         }
 
-        lifecycleScope.launchWhenStarted {
-            collect(flow = weatherPagingAdapter.loadStateFlow
-                .distinctUntilChangedBy { it.source.refresh }
-                .map { it.refresh },
-                action = ::setUsersUiState
-            )
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                collect(flow = weatherPagingAdapter.loadStateFlow
+                    .distinctUntilChangedBy { it.source.refresh }
+                    .map { it.refresh },
+                    action = ::setUsersUiState
+                )
+            }
         }
 
         binding.rvWeatherList.adapter =
