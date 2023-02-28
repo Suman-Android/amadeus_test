@@ -109,13 +109,13 @@ class MainActivity : AppCompatActivity() {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (query != null)
-                    mainViewModel.onSubmitQuery(query)
+                    mainViewModel.onSubmitQuery(query.trim())
                 return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 if (newText != null) {
-                    mainViewModel.onSubmitQuery(newText)
+                    mainViewModel.onSubmitQuery(newText.trim())
                     if (newText.isEmpty())
                         searchView.hideKeyboard()
                 }
